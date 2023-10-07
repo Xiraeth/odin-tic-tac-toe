@@ -1,0 +1,14 @@
+@font-face {
+  font-family: arcade;
+  src: url("font/PublicPixel-z84yD.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: moccasin;
+}
