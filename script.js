@@ -123,8 +123,8 @@ function resetGameStats(board) {
 
 const gameBoard = createGameboard();
 
-let player1 = Player("Monk");
-let player2 = Player("Trolleg");
+let player1 = Player("Player 1");
+let player2 = Player("Player 2");
 
 // Transition into 'select marker' screen
 playGameBtn.addEventListener("click", () => {
