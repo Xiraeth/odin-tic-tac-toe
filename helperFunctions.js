@@ -1,15 +1,15 @@
-function smoothFadeIn(el, displayMethod) {
+function smoothFadeIn(el, delay, displayMethod) {
   el.style.opacity = "1";
   setTimeout(function () {
     el.style.display = displayMethod;
-  }, 1000);
+  }, delay);
 }
 
-function smoothFadeOut(el) {
+function smoothFadeOut(el, delay) {
   el.style.opacity = "0";
   setTimeout(function () {
     el.style.display = "none";
-  }, 1000);
+  }, delay);
 }
 
 export { smoothFadeIn, smoothFadeOut };
