@@ -39,7 +39,7 @@ body {
   text-align: center;
 
   /* Create smooth 'transition to the top of the screen' effect */
-  transition: padding-top 1s;
+  transition: padding-top 1s, font-size 1s;
 }
 
 .gameTitleContainer h1 {
