@@ -2,8 +2,10 @@
 
 import * as hlp from "./helperFunctions.js";
 
+// Time in milliseconds for the different sections of the game to fade out/in
 const FADE_TIME = 1000;
 
+// Elements
 const titleContainer = document.querySelector(".gameTitleContainer");
 const startContainer = document.querySelector(".startContainer");
 const playGameBtn = document.querySelector(".play-game");
@@ -12,45 +14,48 @@ const boardContainer = document.querySelector(".boardContainer");
 const endgameContainer = document.querySelector(".endgameContainer");
 const activePlayerIndic = document.querySelector(".activePlayerContainer");
 const table = document.querySelector(".board-table");
-const pl1 = document.querySelector("#player1");
-const pl2 = document.querySelector("#player2");
+const player1Indicator = document.querySelector("#player1");
+const player2Indicator = document.querySelector("#player2");
 let activePlayer = 1;
+let gameOver = false;
 
 // Create gameboard
 function createGameboard() {
-  const board = [
-    [, , ,],
-    [, , ,],
-    [, , ,],
-  ];
+  let board = ["", "", "", "", "", "", "", "", ""];
 
   const winningCombos = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
+    [0, 4, 8],
+    [2, 4, 6],
   ];
 
-  return { board, winningCombos };
+  const updateBoard = (cell, marker) => {
+    board[+cell] = marker;
+  };
+
+  const checkWin = (playerName, marker) => {
+    for (const combo of winningCombos) {
+      const [a, b, c] = combo;
+      if (board[a] === marker && board[b] === marker && board[c] === marker) {
+        hlp.smoothFadeOut(activePlayerIndic, FADE_TIME);
+        hlp.smoothFadeIn(endgameContainer, FADE_TIME, "flex");
+        endgameContainer.querySelector("h1").textContent = `${playerName} won!`;
+        gameOver = true;
+      }
+    }
+  };
+
+  return { checkWin, updateBoard };
 }
 
 // Create player
 function Player(name) {
   let marker;
-
-  const board = [
-    [, , ,],
-    [, , ,],
-    [, , ,],
-  ];
-
-  const updateBoard = (row, column, cell) => {
-    board[row][column] = cell;
-  };
 
   // Place marker on the board with the appropriate colors and swap the active player indicator
   const playTurn = (td, plActive, plOther, active, marker) => {
@@ -64,19 +69,13 @@ function Player(name) {
     return active;
   };
 
-  return { board, name, marker, playTurn };
-}
-
-// Render the board's container after every move the players make
-function renderBoard(b, row, column, mark) {
-  b.board[row][column] = mark;
+  return { name, marker, playTurn };
 }
 
 const gameBoard = createGameboard();
+
 const player1 = Player("Darkling");
-player1.active = true;
 const player2 = Player("Za warudo");
-player2.active = false;
 
 // Transition into 'select marker' screen
 playGameBtn.addEventListener("click", () => {
@@ -94,11 +93,11 @@ selectMarkerContainer.addEventListener("click", function (e) {
   player1.marker = target.classList.contains("fa-x") ? "X" : "O";
   player2.marker = player1.marker == "X" ? "O" : "X";
 
-  pl1.style.color = player1.marker == "X" ? "red" : "green";
-  pl2.style.color = player1.marker == "X" ? "green" : "red";
+  player1Indicator.style.color = player1.marker == "X" ? "red" : "green";
+  player2Indicator.style.color = player1.marker == "X" ? "green" : "red";
 
-  pl1.textContent = `${player1.name} (${player1.marker})`;
-  pl2.textContent = `${player2.name} (${player2.marker})`;
+  player1Indicator.textContent = `${player1.name} (${player1.marker})`;
+  player2Indicator.textContent = `${player2.name} (${player2.marker})`;
 
   hlp.smoothFadeOut(selectMarkerContainer, 0);
   hlp.smoothFadeIn(boardContainer, 0, "flex");
@@ -107,17 +106,30 @@ selectMarkerContainer.addEventListener("click", function (e) {
 
 // Gameplay
 table.addEventListener("click", (e) => {
-  let count = 0;
-  // Guard clause
   const td = e.target.closest("td");
   if (!td) return;
 
-  if (td.textContent == "" && activePlayer == 1) {
+  if (td.textContent == "" && activePlayer == 1 && !gameOver) {
     // Refer to function expression above. The line below displays the marker and the
     // appropriate colors in the board, while changing the active player indicator
-    activePlayer = player1.playTurn(td, pl1, pl2, activePlayer, player1.marker);
-  } else if (td.textContent == "" && activePlayer == 2) {
-    activePlayer = player2.playTurn(td, pl2, pl1, activePlayer, player2.marker);
+    activePlayer = player1.playTurn(
+      td,
+      player1Indicator,
+      player2Indicator,
+      activePlayer,
+      player1.marker
+    );
+    gameBoard.updateBoard(+td.dataset.cell, player1.marker);
+    gameBoard.checkWin(player1.name, player1.marker);
+  } else if (td.textContent == "" && activePlayer == 2 && !gameOver) {
+    activePlayer = player2.playTurn(
+      td,
+      player2Indicator,
+      player1Indicator,
+      activePlayer,
+      player2.marker
+    );
+    gameBoard.updateBoard(td.dataset.cell, player2.marker);
+    gameBoard.checkWin(player2.name, player2.marker);
   }
-  // renderBoard(gameBoard);
 });
