@@ -1,14 +1,110 @@
 @font-face {
   font-family: arcade;
-  src: url("font/PublicPixel-z84yD.ttf");
+  src: url("fonts/PublicPixel-z84yD.ttf");
+}
+
+@font-face {
+  font-family: schoolbook;
+  src: url("fonts/C059-Roman.ttf");
 }
 
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
   box-sizing: border-box;
+}
+
+:root {
+  font-size: 16px;
 }
 
 body {
   background-color: moccasin;
+  min-height: 100vh;
+}
+
+.start-container {
+  width: 500px;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-container h1 {
+  font-family: schoolbook;
+  font-size: 5rem;
+  font-style: italic;
+  color: darkslategray;
+  margin-bottom: 2rem;
+}
+
+.start-container button {
+  font-family: arcade;
+  font-size: 2rem;
+  color: darkslategray;
+  background-color: moccasin;
+  padding: 2rem;
+  width: 80%;
+  border-radius: 5px;
+}
+
+.start-container button:active {
+  transform: translateY(3px);
+}
+
+.boardContainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-table {
+  font-size: 5rem;
+}
+
+/* Styling the table to look like how it's supposed to */
+
+td {
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+}
+
+td:hover {
+  background: rgb(238, 213, 169);
+}
+
+table,
+td {
+  border: none;
+  border-collapse: collapse;
+}
+
+table td {
+  border: 3px solid black;
+}
+
+table tr:first-child td {
+  border-top: none;
+}
+
+table tr td:first-child {
+  border-left: none;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+table tr td:last-child {
+  border-right: none;
+}
+
+.hidden {
+  display: none;
 }
