@@ -12,6 +12,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  transition: opacity 1s;
 }
 
 :root {
@@ -19,6 +20,8 @@
   --main-color: darkslategray;
   --secondary-color: rgb(87, 131, 131);
   --marker-color: #525252;
+  --x-color: red;
+  --o-color: green;
 }
 
 body {
@@ -39,6 +42,12 @@ body {
   transition: padding-top 1s;
 }
 
+.gameTitleContainer h1 {
+  margin: auto;
+  width: 600px;
+  /* border-bottom: 1px solid black; */
+}
+
 .startContainer {
   display: flex;
   flex-direction: column;
@@ -55,7 +64,6 @@ body {
   padding: 2rem;
   width: 500px;
   border-radius: 5px;
-  transition: opacity 1s;
 }
 
 button:active {
@@ -64,7 +72,8 @@ button:active {
 
 .selectMarker {
   font-family: arcade;
-  display: flex;
+  opacity: 0;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -76,13 +85,21 @@ button:active {
 
 .selectMarker i {
   font-size: 5rem;
-  color: var(--marker-color);
   margin-top: 2rem;
   cursor: pointer;
+  transition: opacity 0s;
+}
+
+.fa-x {
+  color: var(--x-color);
+}
+
+.fa-circle {
+  color: var(--o-color);
 }
 
 .selectMarker i:hover {
-  opacity: 0.8;
+  opacity: 0.75;
 }
 
 .markers {
@@ -94,7 +111,7 @@ button:active {
 
 .boardContainer {
   height: 700px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
@@ -142,25 +159,41 @@ table tr td:last-child {
   border-right: none;
 }
 
-.activePlayer {
+.activePlayerContainer {
   height: 150px;
   width: 600px;
-  display: flex;
+  font-size: 2rem;
+  display: none;
   justify-content: space-around;
   align-items: center;
   margin: auto;
 }
 
+.activePlayerContainer p:not(.active) {
+  opacity: 0.5;
+  color: rgb(139, 126, 126);
+}
+
+.activePlayerContainer p {
+  transition: opacity 0s, font-size 0.3s;
+}
+
+.active {
+  opacity: 1;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
 .endgameContainer {
   height: 150px;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .endgameContainer h1 {
-  color: rgb(19, 161, 55);
+  color: darkslategrey;
   font-size: 3rem;
   margin-bottom: 1rem;
 }

@@ -8,7 +8,7 @@
       src="https://kit.fontawesome.com/00de2a7224.js"
       crossorigin="anonymous"
     ></script>
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module" defer></script>
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
@@ -20,7 +20,7 @@
       <button class="play-game">Play</button>
     </div>
 
-    <div class="selectMarker hidden">
+    <div class="selectMarker">
       <h2>Player 1 select your marker</h2>
       <div class="markers">
         <i class="fa-solid fa-x"></i>
@@ -28,12 +28,12 @@
       </div>
     </div>
 
-    <div class="activePlayer hidden">
-      <p>Player 1</p>
-      <p>Player 2</p>
+    <div class="activePlayerContainer">
+      <p class="active" id="player1"></p>
+      <p class="" id="player2"></p>
     </div>
 
-    <div class="endgameContainer hidden">
+    <div class="endgameContainer">
       <h1>Player 1 won!</h1>
       <div class="endgameButtons">
         <button class="replayBtn">Play Again</button>
