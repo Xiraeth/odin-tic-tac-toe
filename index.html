@@ -4,31 +4,59 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/00de2a7224.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="script.js" defer></script>
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
-    <div class="start-container hidden">
+    <div class="gameTitleContainer">
       <h1>Tic-Tac-Toe</h1>
+    </div>
+
+    <div class="startContainer">
       <button class="play-game">Play</button>
     </div>
 
-    <div class="boardContainer">
+    <div class="selectMarker hidden">
+      <h2>Player 1 select your marker</h2>
+      <div class="markers">
+        <i class="fa-solid fa-x"></i>
+        <i class="fa-regular fa-circle"></i>
+      </div>
+    </div>
+
+    <div class="activePlayer hidden">
+      <p>Player 1</p>
+      <p>Player 2</p>
+    </div>
+
+    <div class="endgameContainer hidden">
+      <h1>Player 1 won!</h1>
+      <div class="endgameButtons">
+        <button class="replayBtn">Play Again</button>
+        <button class="exitBtn">Exit</button>
+      </div>
+    </div>
+
+    <div class="boardContainer hidden">
       <table class="board-table">
         <tr>
-          <td id="one"></td>
-          <td id="two"></td>
-          <td id="three"></td>
+          <td data-cell="1"></td>
+          <td data-cell="2"></td>
+          <td data-cell="3"></td>
         </tr>
         <tr>
-          <td id="four"></td>
-          <td id="five"></td>
-          <td id="six"></td>
+          <td data-cell="4"></td>
+          <td data-cell="5"></td>
+          <td data-cell="6"></td>
         </tr>
         <tr>
-          <td id="seven"></td>
-          <td id="eight"></td>
-          <td id="nine"></td>
+          <td data-cell="7"></td>
+          <td data-cell="8"></td>
+          <td data-cell="9"></td>
         </tr>
       </table>
     </div>

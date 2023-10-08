@@ -16,47 +16,84 @@
 
 :root {
   font-size: 16px;
+  --main-color: darkslategray;
+  --secondary-color: rgb(87, 131, 131);
+  --marker-color: #525252;
 }
 
 body {
   background-color: moccasin;
   min-height: 100vh;
+  overflow: hidden;
 }
 
-.start-container {
+.gameTitleContainer {
+  font-family: schoolbook;
+  font-style: italic;
+  font-size: 3rem;
+  color: var(--main-color);
+  padding-top: 200px;
+  text-align: center;
+
+  /* Create smooth 'transition to the top of the screen' effect */
+  transition: padding-top 1s;
+}
+
+.startContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+}
+
+.startContainer button {
+  font-family: arcade;
+  font-size: 2rem;
+  color: darkslategray;
+  background-color: moccasin;
+  padding: 2rem;
   width: 500px;
-  height: 100vh;
-  margin: auto;
+  border-radius: 5px;
+  transition: opacity 1s;
+}
+
+button:active {
+  transform: translateY(3px);
+}
+
+.selectMarker {
+  font-family: arcade;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.start-container h1 {
-  font-family: schoolbook;
+.selectMarker h2 {
+  color: var(--secondary-color);
+}
+
+.selectMarker i {
   font-size: 5rem;
-  font-style: italic;
-  color: darkslategray;
-  margin-bottom: 2rem;
+  color: var(--marker-color);
+  margin-top: 2rem;
+  cursor: pointer;
 }
 
-.start-container button {
-  font-family: arcade;
-  font-size: 2rem;
-  color: darkslategray;
-  background-color: moccasin;
-  padding: 2rem;
-  width: 80%;
-  border-radius: 5px;
+.selectMarker i:hover {
+  opacity: 0.8;
 }
 
-.start-container button:active {
-  transform: translateY(3px);
+.markers {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .boardContainer {
-  height: 100vh;
+  height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,6 +140,47 @@ table tr:last-child td {
 
 table tr td:last-child {
   border-right: none;
+}
+
+.activePlayer {
+  height: 150px;
+  width: 600px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: auto;
+}
+
+.endgameContainer {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.endgameContainer h1 {
+  color: rgb(19, 161, 55);
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.endgameButtons button {
+  font-size: 2rem;
+  padding: 10px 30px;
+  border: 1px solid black;
+  border-radius: 5px;
+  outline: none;
+}
+
+.replayBtn {
+  background-color: rgb(10, 110, 60);
+  color: #fff;
+}
+
+.exitBtn {
+  background-color: crimson;
+  color: #fff;
 }
 
 .hidden {
