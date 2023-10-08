@@ -1,7 +1,7 @@
-function smoothFadeIn(el, delay, displayMethod) {
+function smoothFadeIn(el, delay, display) {
   el.style.opacity = "1";
   setTimeout(function () {
-    el.style.display = displayMethod;
+    el.style.display = display;
   }, delay);
 }
 

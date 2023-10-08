@@ -16,6 +16,10 @@ const activePlayerIndic = document.querySelector(".activePlayerContainer");
 const table = document.querySelector(".board-table");
 const player1Indicator = document.querySelector("#player1");
 const player2Indicator = document.querySelector("#player2");
+const resultName = document.querySelector("#result-name");
+const resultWon = document.querySelector("#result-won");
+const replayBtn = document.querySelector(".replayBtn");
+const exitBtn = document.querySelector(".exitBtn");
 let turn = 0;
 let activePlayer = 1;
 let gameOver = false;
@@ -39,19 +43,38 @@ function createGameboard() {
     board[+cell] = marker;
   };
 
+  const renderBoard = (cell, activePlayer, marker) => {
+    cell.style.color = activePlayer.style.color;
+    cell.textContent = marker;
+  };
+
+  const resetBoard = () => {
+    board = ["", "", "", "", "", "", "", "", ""];
+    const cell = table.querySelectorAll("td");
+    cell.forEach((cell) => {
+      cell.style.color = "black";
+      cell.textContent = "";
+    });
+  };
+
   const checkWin = (playerName, marker) => {
     for (const combo of winningCombos) {
       const [a, b, c] = combo;
       if (board[a] === marker && board[b] === marker && board[c] === marker) {
         hlp.smoothFadeOut(activePlayerIndic, FADE_TIME);
         hlp.smoothFadeIn(endgameContainer, FADE_TIME, "flex");
-        endgameContainer.querySelector("h1").textContent = `${playerName} won!`;
+        resultName.style.color =
+          activePlayer == 1
+            ? player1Indicator.style.color
+            : player2Indicator.style.color;
+        resultName.textContent = `${playerName} `;
+        resultWon.textContent = `won!`;
         gameOver = true;
       }
     }
   };
 
-  return { checkWin, updateBoard };
+  return { board, checkWin, updateBoard, resetBoard, renderBoard };
 }
 
 // Create player
@@ -60,13 +83,12 @@ function Player(name) {
 
   // Place marker on the board with the appropriate colors and swap the active player indicator
   const playTurn = (td, plActive, plOther, playerActive, marker, board) => {
-    td.style.color = plActive.style.color;
-    td.textContent = marker;
     playerActive = playerActive == 1 ? 2 : 1;
     plActive.classList.toggle("active");
     plOther.classList.toggle("active");
 
     board.updateBoard(+td.dataset.cell, marker);
+    board.renderBoard(td, plActive, marker);
     board.checkWin(name, marker);
 
     turn++;
@@ -78,16 +100,27 @@ function Player(name) {
   return { name, marker, playTurn };
 }
 
+function renderStyles(p1, p1Ind, p2, p2Ind, target) {
+  p1.marker = target.classList.contains("fa-x") ? "X" : "O";
+  p2.marker = p1.marker == "X" ? "O" : "X";
+
+  p1Ind.style.color = p1.marker == "X" ? "red" : "green";
+  p2Ind.style.color = p1.marker == "X" ? "green" : "red";
+
+  p1Ind.textContent = `${p1.name} (${p1.marker})`;
+  p2Ind.textContent = `${p2.name} (${p2.marker})`;
+}
+
 const gameBoard = createGameboard();
 
-const player1 = Player("Monk");
-const player2 = Player("Trolleg");
+let player1 = Player("Monk");
+let player2 = Player("Trolleg");
 
 // Transition into 'select marker' screen
 playGameBtn.addEventListener("click", () => {
   titleContainer.style.paddingTop = "0px";
   titleContainer.style.fontSize = "2rem";
-  hlp.smoothFadeOut(startContainer, FADE_TIME);
+  hlp.smoothFadeOut(startContainer, 0);
   hlp.smoothFadeIn(selectMarkerContainer, FADE_TIME, "flex");
 });
 
@@ -96,14 +129,7 @@ selectMarkerContainer.addEventListener("click", function (e) {
   const target = e.target.closest("i");
   if (!target) return;
 
-  player1.marker = target.classList.contains("fa-x") ? "X" : "O";
-  player2.marker = player1.marker == "X" ? "O" : "X";
-
-  player1Indicator.style.color = player1.marker == "X" ? "red" : "green";
-  player2Indicator.style.color = player1.marker == "X" ? "green" : "red";
-
-  player1Indicator.textContent = `${player1.name} (${player1.marker})`;
-  player2Indicator.textContent = `${player2.name} (${player2.marker})`;
+  renderStyles(player1, player1Indicator, player2, player2Indicator, target);
 
   hlp.smoothFadeOut(selectMarkerContainer, 0);
   hlp.smoothFadeIn(boardContainer, 0, "flex");
@@ -115,7 +141,7 @@ table.addEventListener("click", (e) => {
   const td = e.target.closest("td");
   if (!td) return;
 
-  if (td.textContent == "" && activePlayer == 1 && !gameOver) {
+  if (td.textContent == "" && activePlayer == 1 && !gameOver && turn < 9) {
     // Refer to function expression above. The line below displays the marker and the
     // appropriate colors in the board, while changing the active player indicator
     activePlayer = player1.playTurn(
@@ -126,7 +152,12 @@ table.addEventListener("click", (e) => {
       player1.marker,
       gameBoard
     );
-  } else if (td.textContent == "" && activePlayer == 2 && !gameOver) {
+  } else if (
+    td.textContent == "" &&
+    activePlayer == 2 &&
+    !gameOver &&
+    turn < 9
+  ) {
     activePlayer = player2.playTurn(
       td,
       player2Indicator,
@@ -136,4 +167,35 @@ table.addEventListener("click", (e) => {
       gameBoard
     );
   }
+  if (turn == 9) {
+    gameBoard.updateBoard(+td.dataset.cell, `player${activePlayer}.marker`);
+    gameBoard.checkWin(
+      `player${activePlayer}.name`,
+      `player${activePlayer}.marker`
+    );
+
+    if (!gameOver) {
+      hlp.smoothFadeOut(activePlayerIndic, FADE_TIME);
+      hlp.smoothFadeIn(endgameContainer, FADE_TIME, "flex");
+      endgameContainer.querySelector("h1").textContent = `It's a tie 👔`;
+      gameOver = true;
+    }
+  }
+});
+
+replayBtn.addEventListener("click", function (e) {
+  gameBoard.resetBoard();
+  turn = 0;
+  gameOver = false;
+  activePlayer = 1;
+  player1 = Player("Monk");
+  player2 = Player("Trolleg");
+
+  player1Indicator.classList.add("active");
+  player2Indicator.classList.remove("active");
+
+  hlp.smoothFadeOut(endgameContainer, 0);
+  hlp.smoothFadeOut(boardContainer, 0);
+  hlp.smoothFadeOut(activePlayerIndic, 0);
+  hlp.smoothFadeIn(selectMarkerContainer, 0, "flex");
 });
