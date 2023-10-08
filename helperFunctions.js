@@ -1,4 +1,4 @@
-function smoothFadeIn(el, delay, display) {
+function smoothFadeIn(el, delay, display = "flex") {
   el.style.opacity = "1";
   setTimeout(function () {
     el.style.display = display;

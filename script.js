@@ -111,6 +111,16 @@ function renderStyles(p1, p1Ind, p2, p2Ind, target) {
   p2Ind.textContent = `${p2.name} (${p2.marker})`;
 }
 
+function resetGameStats(board) {
+  board.resetBoard();
+  turn = 0;
+  gameOver = false;
+  activePlayer = 1;
+
+  player1Indicator.classList.add("active");
+  player2Indicator.classList.remove("active");
+}
+
 const gameBoard = createGameboard();
 
 let player1 = Player("Monk");
@@ -118,6 +128,7 @@ let player2 = Player("Trolleg");
 
 // Transition into 'select marker' screen
 playGameBtn.addEventListener("click", () => {
+  titleContainer.style.transition = "all 1s";
   titleContainer.style.paddingTop = "0px";
   titleContainer.style.fontSize = "2rem";
   hlp.smoothFadeOut(startContainer, 0);
@@ -184,18 +195,22 @@ table.addEventListener("click", (e) => {
 });
 
 replayBtn.addEventListener("click", function (e) {
-  gameBoard.resetBoard();
-  turn = 0;
-  gameOver = false;
-  activePlayer = 1;
-  player1 = Player("Monk");
-  player2 = Player("Trolleg");
+  resetGameStats(gameBoard);
 
-  player1Indicator.classList.add("active");
-  player2Indicator.classList.remove("active");
+  hlp.smoothFadeOut(endgameContainer, FADE_TIME);
+  hlp.smoothFadeOut(boardContainer, FADE_TIME);
+  hlp.smoothFadeOut(activePlayerIndic, FADE_TIME);
+  hlp.smoothFadeIn(selectMarkerContainer, FADE_TIME, "flex");
+});
 
-  hlp.smoothFadeOut(endgameContainer, 0);
-  hlp.smoothFadeOut(boardContainer, 0);
-  hlp.smoothFadeOut(activePlayerIndic, 0);
-  hlp.smoothFadeIn(selectMarkerContainer, 0, "flex");
+exitBtn.addEventListener("click", function (e) {
+  resetGameStats(gameBoard);
+
+  // titleContainer.style.transition = "all 0s";
+
+  titleContainer.style.paddingTop = "200px";
+  titleContainer.style.fontSize = "3rem";
+  hlp.smoothFadeIn(startContainer, FADE_TIME);
+  hlp.smoothFadeOut(boardContainer, FADE_TIME);
+  hlp.smoothFadeOut(endgameContainer, FADE_TIME);
 });
