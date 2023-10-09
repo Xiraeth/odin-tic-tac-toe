@@ -54,6 +54,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 40vh;
+  transition: all 1s;
 }
 
 .startContainer button {
@@ -64,6 +65,8 @@ body {
   padding: 2rem;
   width: 500px;
   border-radius: 5px;
+
+  transition: all 1s;
 }
 
 button:active {
@@ -231,4 +234,25 @@ table tr td:last-child {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media only screen and (max-width: 900px) {
+  :root {
+    font-size: 8px;
+  }
+
+  .gameTitleContainer h1 {
+    /* display: block; */
+    width: unset;
+    margin: auto;
+  }
+
+  .startContainer button {
+    width: unset;
+  }
+
+  .activePlayerContainer {
+    width: 200px;
+    text-align: center;
+  }
 }
