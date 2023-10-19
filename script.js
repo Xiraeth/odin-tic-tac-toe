@@ -116,7 +116,7 @@ function resetGameStats(board) {
   turn = 0;
   gameOver = false;
   activePlayer = 1;
-
+  // endgameContainer.querySelector("h1").textContent = ``;
   player1Indicator.classList.add("active");
   player2Indicator.classList.remove("active");
 }
@@ -188,7 +188,8 @@ table.addEventListener("click", (e) => {
     if (!gameOver) {
       hlp.smoothFadeOut(activePlayerIndic, FADE_TIME);
       hlp.smoothFadeIn(endgameContainer, FADE_TIME, "flex");
-      endgameContainer.querySelector("h1").textContent = `It's a tie 👔`;
+      resultName.textContent = "";
+      resultWon.textContent = `It's a tie 👔`;
       gameOver = true;
     }
   }
